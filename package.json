@@ -1,0 +1,23 @@
+{
+  "name": "pixelnode-input-bbbtcs34725",
+  "version": "0.0.1",
+  "description": "Input from TCS34725 color sensors. Supporting multiple sensors via different i2c-buses. Beaglebone Only.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dwisk/PixelNode_Input_bbbTCS34725.git"
+  },
+  "author": {
+    "name": "Amely Kling",
+    "email": "mail@dwi.sk",
+    "url": "http://dwi.sk"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dwisk/PixelNode_Input_bbbTCS34725/issues"
+  },
+  "homepage": "https://github.com/dwisk/PixelNode_Input_bbbTCS34725#readme"
+}
