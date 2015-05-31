@@ -137,7 +137,10 @@ PixelNode_Input_bbbTCS34725.prototype.getRGBcolor = function(sensor, cb) {
 
   sensor.setIntegrationTime(24, function() {});
   sensor.getRawData(function(err, colors) {
-    if (err) throw err;
+    if (err) {
+    	console.log(err);
+    	throw err
+    };
     if (colors.clear > 0) {
        // get raw values
         var sum = colors.red + colors.green + colors.blue + colors.clear;
@@ -223,9 +226,14 @@ PixelNode_Input_bbbTCS34725.prototype.startReading = function() {
 					self.getRGBcolor(sensor, function(color) { 
 						// set read color value into pixelNode data
 						global.pixelNode.data.set(path, color);						
-						// switch LED off
 						
+						// switch LED off						
 						sensor.setLED(false);
+
+						// reset i2c bus to first config
+						if (side > 0) {
+							rgbLib.use(self.options.sensors[0]);
+						}
 						
 						// switch side after reading
 						side = side > 0 ? 0 : 1;
