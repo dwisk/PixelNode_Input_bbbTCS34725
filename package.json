@@ -1,6 +1,6 @@
 {
   "name": "pixelnode-input-bbbtcs34725",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Input from TCS34725 color sensors. Supporting multiple sensors via different i2c-buses. Beaglebone Only.",
   "main": "index.js",
   "scripts": {
