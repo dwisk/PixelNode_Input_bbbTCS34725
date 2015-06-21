@@ -58,7 +58,10 @@ PixelNode_Input_bbbTCS34725.prototype.default_options = {
 			"irq_pin" : "P9_27",
 			"enable"  : "inputs.buttons.button_right"
 	    }
-	]
+	],
+	"loop_delay": 250,
+	"read_delay": 200,
+	"gammapow": 2.5
 };
 
 PixelNode_Input_bbbTCS34725.prototype.gammatable = [];
@@ -117,7 +120,7 @@ PixelNode_Input_bbbTCS34725.prototype.initGammaTable = function() {
 	for (i=0; i<256; i++) {
 	  var x = i;
 	  x = x / 255;
-	  x = Math.pow(x, 2.5);
+	  x = Math.pow(x, this.options.gammapow);
 	  x = x * 255;
 	    
 	  this.gammatable[i] = Math.round(x);      
@@ -215,7 +218,7 @@ PixelNode_Input_bbbTCS34725.prototype.startReading = function() {
 			} else {
 
 				// init rgblib with sensor config
-				sensor = rgbLib.use(self.options.sensors[side]);
+				var sensor = rgbLib.use(self.options.sensors[side]);
 
 				// set led on
 				sensor.setLED(true);
@@ -227,8 +230,6 @@ PixelNode_Input_bbbTCS34725.prototype.startReading = function() {
 						// set read color value into pixelNode data
 						global.pixelNode.data.set(path, color);						
 						
-						// switch LED off						
-						sensor.setLED(false);
 
 						// reset i2c bus to first config
 						if (side > 0) {
@@ -238,11 +239,24 @@ PixelNode_Input_bbbTCS34725.prototype.startReading = function() {
 						// switch side after reading
 						side = side > 0 ? 0 : 1;
 					});  
-				}, 250);
+				}, self.options.read_delay);
 			}
 
 		// if sensor should not be changed
 		} else {
+			if (sensor_enabled[self.options.sensors[side].name]) {
+				// init rgblib with sensor config
+				var sensor = rgbLib.use(self.options.sensors[side]);
+
+				// switch LED off						
+				sensor.setLED(false);
+	
+				// reset i2c bus to first config
+				if (side > 0) {
+					rgbLib.use(self.options.sensors[0]);
+				}
+			}
+
 			// reset enabled memory
 			sensor_enabled[self.options.sensors[side].name] = false;
 
@@ -251,7 +265,7 @@ PixelNode_Input_bbbTCS34725.prototype.startReading = function() {
 		}
 
 
-	}, 500);
+	}, self.options.loop_delay);
 }
 
 
